@@ -1,3 +1,6 @@
+<?php
+require_once('./controller.php');
+?>
 <html lang="en">
 
 <head>
@@ -8,11 +11,12 @@
 </head>
 
 <body>
-  <h1>Hello World!</h1>
-  <p><?php
-      $currentDate = new DateTime();
-      echo $currentDate->format('Y-m-d H:i:s');
-      ?></p>
+  <h1>Demo</h1>
+  <form action="<?php (new Controller())->addLead();  ?>">
+    Name: <input type="text" name="name" />
+    Email: <input type="email" name="email" />
+    <input type="submit" />
+  </form>
 </body>
 
 </html>

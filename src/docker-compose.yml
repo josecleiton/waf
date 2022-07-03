@@ -1,0 +1,37 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  apache:
+    container_name: apache
+    build:
+      context: ./apache
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./www/:/var/www/site/:ro
+    links:
+      - database
+    depends_on:
+      - database
+  apache-secured:
+    container_name: apache-secured
+    build:
+      context: ./apache-sec
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - ./www/:/var/www/site/:ro
+    links:
+      - database
+    depends_on:
+      - database
+  database:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=d086e517-a7f2-44a8-b0b0-a16f224bad5b
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=senhamuitoforte123
+      - MYSQL_DATABASE=store

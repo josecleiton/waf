@@ -6,10 +6,13 @@ RUN apt-get update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-g
     libapache2-mod-php libapache2-mod-security2 \
     curl lynx curl php-zip unzip git phpmyadmin
 
+RUN ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf
+
 # Enable apache mods.
 RUN a2enmod php8.1
 RUN a2enmod rewrite
 RUN a2enmod headers
+RUN a2enconf phpmyadmin.conf
 
 # custom config php.ini
 ADD php.ini /etc/php/php.ini
