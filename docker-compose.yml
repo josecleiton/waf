@@ -26,6 +26,18 @@ services:
       - database
     depends_on:
       - database
+  reverse:
+    image: owasp/modsecurity-crs:apache
+    ports:
+      - 8001:443
+      - 8002:80
+    environment:
+      - ALLOWED_METHODS=GET HEAD POST PATCH DELETE OPTIONS
+      - PROXY=1
+      - BACKEND=http://voleibol-api-nestjs:3000
+    networks:
+      - volei-network
+
   database:
     image: mysql:5.7
     ports:
@@ -35,3 +47,6 @@ services:
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=senhamuitoforte123
       - MYSQL_DATABASE=store
+networks:
+  volei-network:
+    driver: bridge
