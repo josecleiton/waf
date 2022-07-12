@@ -22,16 +22,19 @@ docker-compose up --build
 ### SQL Injection
 
 
-Envie a string a seguir no form de busca:  `'; DELETE FROM leads; -- a'`
+Send the following string on search form:  `'; DELETE FROM leads; -- a'`
 
 ### XSS
 
-Envie a string a seguir no form de busca: `<script>alert('xss')</script>`
+Send the following string on search form: `<script>alert('xss')</script>`
 
 ### CSRF
 
-1. Logue na Amazon.com.br
-2. Clique no botão atrativo de fotos de gatinhos =)
+1. Login on Amazon
+2. Click on "gatinhos" button =)
+
+
+Facebook sends a crf token on every write request:
 
 ```javascript
 fetch("https://www.facebook.com/api/graphql/", {
@@ -60,18 +63,18 @@ fetch("https://www.facebook.com/api/graphql/", {
 
 ### PHP Object Injection
 
-1. Envie o nome do lead na página `index.php` assim: `O:5:"Model":1:{s:4:"file";s:8:"damn";}`
-2. Mostre o código da classe `Model` em `model.php` (observe o destruct)
-3. Explique que se a imagem permitir que o php rode em nível root dentro do container, ele poderá excluir qualquer arquivo do sistema, causando a morte do container (que poderia ser um sistema em um cenário legado).
+1. Send on `index.php` name input form the following: `O:5:"Model":1:{s:4:"file";s:8:"damn";}`
+2. Look to `Model` code in `model.php` (more specifically the destruct method)
+3. If the image has root access to containers files, that code could delete any file on the system, possibly making the container temporally inaccessible. 
 
 
 ### Reverse Proxy Security
 
-ModSecurity normalmente é usado como um proxy reverso. Permitindo utilizar o ModSecurity sem modificar o servidor de destino da requisição (aplicação destino), tornando o modsecurity bastante versátil, pois se aplica a aplicações em ambientes que não são suportados nativamente pela ferramenta.
+ModSecurity is typically used as a reverse proxy. Allowing the use of ModSecurity without modifying the destination server of the request (destination application), making ModSecurity quite versatile, as it applies to applications in environments that are not natively supported by the tool.
 
-Vamos usar a API produzida na matéria de TEES como caso de uso:
+Let's use the [Volleyball API](https://github.com/josecleiton/volleyball-api) to demonstrate that: 
 
-1. Adicione a API na rede do proxy reverso: `docker network connect waf_volei-network voleibol-api-nestjs`
-2. Acesse a documentação da API utilizando o proxy reverso para ter certeza de que tudo está ok: `https://localhost:8001/docs`
-3. Explique que o próprio Modsecurity já cria uma conexão criptografada para o backend que está protegido por ele, porém essa conexão usa certificados auto assinados.
-4. Tente atacar as vulnerabilidades dos tópicos anteriores.
+1. Add the API to the reverse proxy network: `docker network connect waf_volei-network volleyball-api-nestjs`
+2. Access the API documentation using the reverse proxy to make sure everything is ok: `https://localhost:8001/docs`
+3. Modsecurity itself already creates an encrypted connection to the backend that is protected by it, but this connection uses self-signed certificates.
+4. Try to attack the vulnerabilities from the previous topics.
